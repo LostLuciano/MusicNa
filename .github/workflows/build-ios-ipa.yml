@@ -125,22 +125,26 @@ jobs:
 
           APP_NAME=$(basename "$ARCHIVE_APP_PATH")
           echo "Found app bundle: $APP_NAME"
+          echo "App bundle size: $(du -sh "$ARCHIVE_APP_PATH" | cut -f1)"
           echo "Packaging native app bundle: $ARCHIVE_APP_PATH"
 
-          # 1. Create Payload folder and copy app into it
+          # 1. Create Payload folder and copy app into it using ditto (more reliable for large dirs)
           PACKAGE_DIR="${RUNNER_TEMP}/ipa_package"
           rm -rf "$PACKAGE_DIR"
           mkdir -p "$PACKAGE_DIR/Payload"
-          cp -R "$ARCHIVE_APP_PATH" "$PACKAGE_DIR/Payload/"
+          echo "Copying app bundle to Payload..."
+          ditto "$ARCHIVE_APP_PATH" "$PACKAGE_DIR/Payload/$APP_NAME"
 
           # 2. Create the Unsigned IPA file (ready for ESign)
           IPA_NAME="MusicX.ipa"
+          echo "Creating IPA archive..."
           cd "$PACKAGE_DIR"
-          zip -r "${{ github.workspace }}/$IPA_NAME" Payload
+          zip -r -q "${{ github.workspace }}/$IPA_NAME" Payload
 
           # 3. Create the ZIP containing the IPA file for deployment
+          echo "Creating distribution ZIP..."
           cd "${{ github.workspace }}"
-          zip -r "${{ env.ZIP_NAME }}" "$IPA_NAME"
+          zip -r -q "${{ env.ZIP_NAME }}" "$IPA_NAME"
 
           echo "=== Packaging Complete ==="
           ls -lh "${{ env.ZIP_NAME }}"
