@@ -77,7 +77,8 @@ public class AudioFeatureExtractor {
             windowed.withUnsafeMutableBufferPointer { ptr in
                 realPart.withUnsafeMutableBufferPointer { rBuf in
                     imagPart.withUnsafeMutableBufferPointer { iBuf in
-                        var splitComplex = DSPSplitComplex(realp: rBuf.baseAddress!, imagp: iBuf.baseAddress!)
+                        guard let realPtr = rBuf.baseAddress, let imagPtr = iBuf.baseAddress else { return }
+                        var splitComplex = DSPSplitComplex(realp: realPtr, imagp: imagPtr)
                         // Pack real signal into split complex (interleaved trick)
                         ptr.baseAddress!.withMemoryRebound(to: DSPComplex.self, capacity: halfN) { complexPtr in
                             vDSP_ctoz(complexPtr, 2, &splitComplex, 1, vDSP_Length(halfN))
@@ -86,8 +87,8 @@ public class AudioFeatureExtractor {
 
                         // Scale
                         var scale = Float(1.0 / Float(nFFT))
-                        vDSP_vsmul(realPart, 1, &scale, &realPart, 1, vDSP_Length(halfN))
-                        vDSP_vsmul(imagPart, 1, &scale, &imagPart, 1, vDSP_Length(halfN))
+                        vDSP_vsmul(realPtr, 1, &scale, realPtr, 1, vDSP_Length(halfN))
+                        vDSP_vsmul(imagPtr, 1, &scale, imagPtr, 1, vDSP_Length(halfN))
                     }
                 }
             }
@@ -158,7 +159,10 @@ public class AudioFeatureExtractor {
         vDSP_maxv(output, 1, &maxVal, vDSP_Length(output.count))
         if maxVal > 0 {
             var scale = 1.0 / maxVal
-            vDSP_vsmul(output, 1, &scale, &output, 1, vDSP_Length(output.count))
+            output.withUnsafeMutableBufferPointer { buf in
+                guard let ptr = buf.baseAddress else { return }
+                vDSP_vsmul(ptr, 1, &scale, ptr, 1, vDSP_Length(output.count))
+            }
         }
 
         guard let format = AVAudioFormat(
@@ -386,8 +390,14 @@ public class AudioFeatureExtractor {
         let maxVal = max(maxValL, maxValR)
         if maxVal > 0 {
             var scale = 1.0 / maxVal
-            vDSP_vsmul(leftOutput, 1, &scale, &leftOutput, 1, vDSP_Length(leftOutput.count))
-            vDSP_vsmul(rightOutput, 1, &scale, &rightOutput, 1, vDSP_Length(rightOutput.count))
+            leftOutput.withUnsafeMutableBufferPointer { buf in
+                guard let ptr = buf.baseAddress else { return }
+                vDSP_vsmul(ptr, 1, &scale, ptr, 1, vDSP_Length(leftOutput.count))
+            }
+            rightOutput.withUnsafeMutableBufferPointer { buf in
+                guard let ptr = buf.baseAddress else { return }
+                vDSP_vsmul(ptr, 1, &scale, ptr, 1, vDSP_Length(rightOutput.count))
+            }
         }
 
         guard let format = AVAudioFormat(
