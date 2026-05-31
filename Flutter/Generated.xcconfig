@@ -1,0 +1,4 @@
+// Flutter/Generated.xcconfig
+// Generated configuration for native iOS build
+// This file is referenced by the Xcode project but contains minimal configuration
+// as this is a fully native iOS UIKit build without Flutter SDK dependencies.
