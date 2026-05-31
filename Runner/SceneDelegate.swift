@@ -1885,7 +1885,6 @@ class AnalyticsViewController: UIViewController, UITableViewDataSource, UITableV
         
         return cell!
     }
-}
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if tableView == chordsTableView {
             return 54
