@@ -1,0 +1,128 @@
+# Trigger build with uploaded LFS objects for a fully native Swift/UIKit iOS 18+ App (Standalone - ESign Friendly)
+name: Build Standalone Native iOS ZIP
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: build-ios-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  ZIP_NAME: MusicX.zip
+
+jobs:
+  build-ios:
+    name: Build iOS Application (Unsigned)
+    runs-on: macos-15
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Checkout LFS Objects
+        run: |
+          git lfs install
+          git lfs pull
+          echo "=== LFS file sizes ==="
+          find Runner -name "*.mlmodelc" -o -name "*.m4a" -o -name "*.caf" | head -10 | xargs ls -lh 2>/dev/null || true
+          wc -c Runner/Vocals.m4a 2>/dev/null || true
+
+      - name: Show Available Xcode Versions
+        run: |
+          ls /Applications | grep Xcode || true
+
+      - name: Select Xcode 16
+        run: |
+          if [ -d "/Applications/Xcode_16.4.app" ]; then
+            sudo xcode-select -s /Applications/Xcode_16.4.app/Contents/Developer
+          elif [ -d "/Applications/Xcode_16.3.app" ]; then
+            sudo xcode-select -s /Applications/Xcode_16.3.app/Contents/Developer
+          elif [ -d "/Applications/Xcode_16.2.app" ]; then
+            sudo xcode-select -s /Applications/Xcode_16.2.app/Contents/Developer
+          elif [ -d "/Applications/Xcode_16.1.app" ]; then
+            sudo xcode-select -s /Applications/Xcode_16.1.app/Contents/Developer
+          elif [ -d "/Applications/Xcode_16.0.app" ]; then
+            sudo xcode-select -s /Applications/Xcode_16.0.app/Contents/Developer
+          else
+            echo "Xcode 16 not found. iOS 18 build requires Xcode 16 or newer."
+            exit 1
+          fi
+          xcodebuild -version
+          xcrun --sdk iphoneos --show-sdk-version
+
+      - name: Clear Xcode Cache
+        run: |
+          rm -rf ~/Library/Developer/Xcode/DerivedData/*
+          rm -rf ~/Library/Caches/com.apple.dt.Xcode
+
+      - name: Build and Archive (Unsigned)
+        run: |
+          xcodebuild archive \
+            -project Runner.xcodeproj \
+            -scheme Runner \
+            -configuration Release \
+            -sdk iphoneos \
+            -archivePath build/Runner.xcarchive \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            AD_HOC_CODE_SIGNING_ALLOWED=YES
+
+      - name: Package IPA and ZIP
+        run: |
+          set -e
+
+          ARCHIVE_APP_PATH="build/Runner.xcarchive/Products/Applications/Runner.app"
+
+          if [ ! -d "$ARCHIVE_APP_PATH" ]; then
+            echo "ERROR: Runner.app not found inside archive: $ARCHIVE_APP_PATH"
+            find build -name "*.app" -type d 2>/dev/null
+            exit 1
+          fi
+
+          echo "Packaging native app bundle: $ARCHIVE_APP_PATH"
+
+          # 1. Create Payload folder and copy Runner.app into it
+          PACKAGE_DIR="${RUNNER_TEMP}/ipa_package"
+          rm -rf "$PACKAGE_DIR"
+          mkdir -p "$PACKAGE_DIR/Payload"
+          cp -R "$ARCHIVE_APP_PATH" "$PACKAGE_DIR/Payload/"
+
+          # 2. Create the Unsigned IPA file (ready for ESign)
+          IPA_NAME="MusicX.ipa"
+          cd "$PACKAGE_DIR"
+          zip -r "${{ github.workspace }}/$IPA_NAME" Payload
+
+          # 3. Create the ZIP containing the IPA file for deployment
+          cd "${{ github.workspace }}"
+          zip -r "${{ env.ZIP_NAME }}" "$IPA_NAME"
+
+          echo "=== Packaging Complete ==="
+          ls -lh "${{ env.ZIP_NAME }}"
+          ls -lh "$IPA_NAME"
+
+      - name: Upload ZIP Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: MusicX-Native-iOS-ZIP
+          path: ${{ env.ZIP_NAME }}
+          retention-days: 30
+
+      - name: Upload Build Logs on Failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: native-build-logs
+          path: build/
+          retention-days: 7
