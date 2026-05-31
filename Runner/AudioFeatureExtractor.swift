@@ -75,20 +75,21 @@ public class AudioFeatureExtractor {
             var imagPart = [Float](repeating: 0, count: halfN)
 
             windowed.withUnsafeMutableBufferPointer { ptr in
-                var splitComplex = DSPSplitComplex(
-                    realp: realPart.withUnsafeMutableBufferPointer { $0.baseAddress! },
-                    imagp: imagPart.withUnsafeMutableBufferPointer { $0.baseAddress! }
-                )
-                // Pack real signal into split complex (interleaved trick)
-                ptr.baseAddress!.withMemoryRebound(to: DSPComplex.self, capacity: halfN) { complexPtr in
-                    vDSP_ctoz(complexPtr, 2, &splitComplex, 1, vDSP_Length(halfN))
-                }
-                vDSP_fft_zrip(fftSetup, &splitComplex, 1, log2n, FFTDirection(FFT_FORWARD))
+                realPart.withUnsafeMutableBufferPointer { rBuf in
+                    imagPart.withUnsafeMutableBufferPointer { iBuf in
+                        var splitComplex = DSPSplitComplex(realp: rBuf.baseAddress!, imagp: iBuf.baseAddress!)
+                        // Pack real signal into split complex (interleaved trick)
+                        ptr.baseAddress!.withMemoryRebound(to: DSPComplex.self, capacity: halfN) { complexPtr in
+                            vDSP_ctoz(complexPtr, 2, &splitComplex, 1, vDSP_Length(halfN))
+                        }
+                        vDSP_fft_zrip(fftSetup, &splitComplex, 1, log2n, FFTDirection(FFT_FORWARD))
 
-                // Scale
-                var scale = Float(1.0 / Float(nFFT))
-                vDSP_vsmul(realPart, 1, &scale, &realPart, 1, vDSP_Length(halfN))
-                vDSP_vsmul(imagPart, 1, &scale, &imagPart, 1, vDSP_Length(halfN))
+                        // Scale
+                        var scale = Float(1.0 / Float(nFFT))
+                        vDSP_vsmul(realPart, 1, &scale, &realPart, 1, vDSP_Length(halfN))
+                        vDSP_vsmul(imagPart, 1, &scale, &imagPart, 1, vDSP_Length(halfN))
+                    }
+                }
             }
 
             realFrames.append(realPart)
@@ -126,11 +127,10 @@ public class AudioFeatureExtractor {
             var rPart = realFrame
             var iPart = imagFrame
 
-            var splitComplex = DSPSplitComplex(
-                realp: &rPart,
-                imagp: &iPart
-            )
-            vDSP_fft_zrip(fftSetup, &splitComplex, 1, log2n, FFTDirection(FFT_INVERSE))
+            rPart.withUnsafeMutableBufferPointer { rBuf in
+                iPart.withUnsafeMutableBufferPointer { iBuf in
+                    var splitComplex = DSPSplitComplex(realp: rBuf.baseAddress!, imagp: iBuf.baseAddress!)
+                    vDSP_fft_zrip(fftSetup, &splitComplex, 1, log2n, FFTDirection(FFT_INVERSE))
 
             var timeDomain = [Float](repeating: 0, count: nFFT)
             timeDomain.withUnsafeMutableBufferPointer { ptr in
@@ -147,6 +147,8 @@ public class AudioFeatureExtractor {
             for i in 0..<nFFT {
                 if offset + i < output.count {
                     output[offset + i] += windowed[i]
+                }
+            }
                 }
             }
         }
@@ -170,7 +172,7 @@ public class AudioFeatureExtractor {
         ) else { return nil }
 
         pcmBuffer.frameLength = AVAudioFrameCount(output.count)
-        pcmBuffer.floatChannelData![0].assign(from: output, count: output.count)
+        pcmBuffer.floatChannelData![0].update(from: output, count: output.count)
 
         print("AudioFeatureExtractor: iSTFT → \(output.count) samples")
         return pcmBuffer
@@ -321,8 +323,10 @@ public class AudioFeatureExtractor {
             var rPart = realFrame
             var iPart = imagFrame
 
-            var splitComplex = DSPSplitComplex(realp: &rPart, imagp: &iPart)
-            vDSP_fft_zrip(fftSetup, &splitComplex, 1, log2n, FFTDirection(FFT_INVERSE))
+            rPart.withUnsafeMutableBufferPointer { rBuf in
+                iPart.withUnsafeMutableBufferPointer { iBuf in
+                    var splitComplex = DSPSplitComplex(realp: rBuf.baseAddress!, imagp: iBuf.baseAddress!)
+                    vDSP_fft_zrip(fftSetup, &splitComplex, 1, log2n, FFTDirection(FFT_INVERSE))
 
             var timeDomain = [Float](repeating: 0, count: nFFT)
             timeDomain.withUnsafeMutableBufferPointer { ptr in
@@ -341,14 +345,17 @@ public class AudioFeatureExtractor {
                 }
             }
         }
+        }
 
         // Reconstruct Right Channel
         for (frameIdx, (realFrame, imagFrame)) in zip(realR, imagR).enumerated() {
             var rPart = realFrame
             var iPart = imagFrame
 
-            var splitComplex = DSPSplitComplex(realp: &rPart, imagp: &iPart)
-            vDSP_fft_zrip(fftSetup, &splitComplex, 1, log2n, FFTDirection(FFT_INVERSE))
+            rPart.withUnsafeMutableBufferPointer { rBuf in
+                iPart.withUnsafeMutableBufferPointer { iBuf in
+                    var splitComplex = DSPSplitComplex(realp: rBuf.baseAddress!, imagp: iBuf.baseAddress!)
+                    vDSP_fft_zrip(fftSetup, &splitComplex, 1, log2n, FFTDirection(FFT_INVERSE))
 
             var timeDomain = [Float](repeating: 0, count: nFFT)
             timeDomain.withUnsafeMutableBufferPointer { ptr in
@@ -364,6 +371,8 @@ public class AudioFeatureExtractor {
             for i in 0..<nFFT {
                 if offset + i < rightOutput.count {
                     rightOutput[offset + i] += windowed[i]
+                }
+            }
                 }
             }
         }
@@ -391,8 +400,8 @@ public class AudioFeatureExtractor {
         ) else { return nil }
 
         pcmBuffer.frameLength = AVAudioFrameCount(leftOutput.count)
-        pcmBuffer.floatChannelData![0].assign(from: leftOutput, count: leftOutput.count)
-        pcmBuffer.floatChannelData![1].assign(from: rightOutput, count: rightOutput.count)
+        pcmBuffer.floatChannelData![0].update(from: leftOutput, count: leftOutput.count)
+        pcmBuffer.floatChannelData![1].update(from: rightOutput, count: rightOutput.count)
 
         print("AudioFeatureExtractor: iSTFTStereo → \(leftOutput.count) stereo samples reconstructed")
         return pcmBuffer

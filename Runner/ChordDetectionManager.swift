@@ -142,7 +142,7 @@ public class ChordDetectionManager {
                 let featureValue = MLFeatureValue(multiArray: multiArray)
                 let provider = try MLDictionaryFeatureProvider(dictionary: [inputName: featureValue])
                 
-                let output = try model.prediction(from: provider)
+                let output = try await model.prediction(from: provider)
                 guard let logitsFeature = output.featureValue(for: "logits"),
                       let logitsArray = logitsFeature.multiArrayValue else {
                     throw NSError(domain: "ChordDetectionManager", code: 500, userInfo: [NSLocalizedDescriptionKey: "Failed to extract logits from output"])
