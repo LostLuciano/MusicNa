@@ -161,7 +161,8 @@ public class AudioFeatureExtractor {
             var scale = 1.0 / maxVal
             output.withUnsafeMutableBufferPointer { buf in
                 guard let ptr = buf.baseAddress else { return }
-                vDSP_vsmul(ptr, 1, &scale, ptr, 1, vDSP_Length(output.count))
+                let count = vDSP_Length(buf.count)
+                vDSP_vsmul(ptr, 1, &scale, ptr, 1, count)
             }
         }
 
@@ -392,11 +393,13 @@ public class AudioFeatureExtractor {
             var scale = 1.0 / maxVal
             leftOutput.withUnsafeMutableBufferPointer { buf in
                 guard let ptr = buf.baseAddress else { return }
-                vDSP_vsmul(ptr, 1, &scale, ptr, 1, vDSP_Length(leftOutput.count))
+                let count = vDSP_Length(buf.count)
+                vDSP_vsmul(ptr, 1, &scale, ptr, 1, count)
             }
             rightOutput.withUnsafeMutableBufferPointer { buf in
                 guard let ptr = buf.baseAddress else { return }
-                vDSP_vsmul(ptr, 1, &scale, ptr, 1, vDSP_Length(rightOutput.count))
+                let count = vDSP_Length(buf.count)
+                vDSP_vsmul(ptr, 1, &scale, ptr, 1, count)
             }
         }
 
