@@ -132,23 +132,23 @@ public class AudioFeatureExtractor {
                     var splitComplex = DSPSplitComplex(realp: rBuf.baseAddress!, imagp: iBuf.baseAddress!)
                     vDSP_fft_zrip(fftSetup, &splitComplex, 1, log2n, FFTDirection(FFT_INVERSE))
 
-            var timeDomain = [Float](repeating: 0, count: nFFT)
-            timeDomain.withUnsafeMutableBufferPointer { ptr in
-                ptr.baseAddress!.withMemoryRebound(to: DSPComplex.self, capacity: halfN) { dst in
-                    vDSP_ztoc(&splitComplex, 1, dst, 2, vDSP_Length(halfN))
-                }
-            }
+                    var timeDomain = [Float](repeating: 0, count: nFFT)
+                    timeDomain.withUnsafeMutableBufferPointer { ptr in
+                        ptr.baseAddress!.withMemoryRebound(to: DSPComplex.self, capacity: halfN) { dst in
+                            vDSP_ztoc(&splitComplex, 1, dst, 2, vDSP_Length(halfN))
+                        }
+                    }
 
-            // Apply synthesis window and overlap-add
-            var windowed = [Float](repeating: 0, count: nFFT)
-            vDSP_vmul(timeDomain, 1, hanningWindow, 1, &windowed, 1, vDSP_Length(nFFT))
+                    // Apply synthesis window and overlap-add
+                    var windowed = [Float](repeating: 0, count: nFFT)
+                    vDSP_vmul(timeDomain, 1, hanningWindow, 1, &windowed, 1, vDSP_Length(nFFT))
 
-            let offset = frameIdx * hopSize
-            for i in 0..<nFFT {
-                if offset + i < output.count {
-                    output[offset + i] += windowed[i]
-                }
-            }
+                    let offset = frameIdx * hopSize
+                    for i in 0..<nFFT {
+                        if offset + i < output.count {
+                            output[offset + i] += windowed[i]
+                        }
+                    }
                 }
             }
         }
@@ -328,23 +328,24 @@ public class AudioFeatureExtractor {
                     var splitComplex = DSPSplitComplex(realp: rBuf.baseAddress!, imagp: iBuf.baseAddress!)
                     vDSP_fft_zrip(fftSetup, &splitComplex, 1, log2n, FFTDirection(FFT_INVERSE))
 
-            var timeDomain = [Float](repeating: 0, count: nFFT)
-            timeDomain.withUnsafeMutableBufferPointer { ptr in
-                ptr.baseAddress!.withMemoryRebound(to: DSPComplex.self, capacity: halfN) { dst in
-                    vDSP_ztoc(&splitComplex, 1, dst, 2, vDSP_Length(halfN))
+                    var timeDomain = [Float](repeating: 0, count: nFFT)
+                    timeDomain.withUnsafeMutableBufferPointer { ptr in
+                        ptr.baseAddress!.withMemoryRebound(to: DSPComplex.self, capacity: halfN) { dst in
+                            vDSP_ztoc(&splitComplex, 1, dst, 2, vDSP_Length(halfN))
+                        }
+                    }
+
+                    var windowed = [Float](repeating: 0, count: nFFT)
+                    vDSP_vmul(timeDomain, 1, hanningWindow, 1, &windowed, 1, vDSP_Length(nFFT))
+
+                    let offset = frameIdx * hopSize
+                    for i in 0..<nFFT {
+                        if offset + i < leftOutput.count {
+                            leftOutput[offset + i] += windowed[i]
+                        }
+                    }
                 }
             }
-
-            var windowed = [Float](repeating: 0, count: nFFT)
-            vDSP_vmul(timeDomain, 1, hanningWindow, 1, &windowed, 1, vDSP_Length(nFFT))
-
-            let offset = frameIdx * hopSize
-            for i in 0..<nFFT {
-                if offset + i < leftOutput.count {
-                    leftOutput[offset + i] += windowed[i]
-                }
-            }
-        }
         }
 
         // Reconstruct Right Channel
@@ -357,22 +358,22 @@ public class AudioFeatureExtractor {
                     var splitComplex = DSPSplitComplex(realp: rBuf.baseAddress!, imagp: iBuf.baseAddress!)
                     vDSP_fft_zrip(fftSetup, &splitComplex, 1, log2n, FFTDirection(FFT_INVERSE))
 
-            var timeDomain = [Float](repeating: 0, count: nFFT)
-            timeDomain.withUnsafeMutableBufferPointer { ptr in
-                ptr.baseAddress!.withMemoryRebound(to: DSPComplex.self, capacity: halfN) { dst in
-                    vDSP_ztoc(&splitComplex, 1, dst, 2, vDSP_Length(halfN))
-                }
-            }
+                    var timeDomain = [Float](repeating: 0, count: nFFT)
+                    timeDomain.withUnsafeMutableBufferPointer { ptr in
+                        ptr.baseAddress!.withMemoryRebound(to: DSPComplex.self, capacity: halfN) { dst in
+                            vDSP_ztoc(&splitComplex, 1, dst, 2, vDSP_Length(halfN))
+                        }
+                    }
 
-            var windowed = [Float](repeating: 0, count: nFFT)
-            vDSP_vmul(timeDomain, 1, hanningWindow, 1, &windowed, 1, vDSP_Length(nFFT))
+                    var windowed = [Float](repeating: 0, count: nFFT)
+                    vDSP_vmul(timeDomain, 1, hanningWindow, 1, &windowed, 1, vDSP_Length(nFFT))
 
-            let offset = frameIdx * hopSize
-            for i in 0..<nFFT {
-                if offset + i < rightOutput.count {
-                    rightOutput[offset + i] += windowed[i]
-                }
-            }
+                    let offset = frameIdx * hopSize
+                    for i in 0..<nFFT {
+                        if offset + i < rightOutput.count {
+                            rightOutput[offset + i] += windowed[i]
+                        }
+                    }
                 }
             }
         }
