@@ -156,6 +156,7 @@ jobs:
 
       - name: Build and Archive (Unsigned)
         run: |
+          set -o pipefail
           xcodebuild archive \
             -project Runner.xcodeproj \
             -scheme Runner \
@@ -165,7 +166,34 @@ jobs:
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGN_IDENTITY="" \
-            AD_HOC_CODE_SIGNING_ALLOWED=YES
+            AD_HOC_CODE_SIGNING_ALLOWED=YES 2>&1 | tee build_output.log
+          
+          # If build failed, extract and display Swift compilation errors
+          if [ ${PIPESTATUS[0]} -ne 0 ]; then
+            echo ""
+            echo "=========================================="
+            echo "BUILD FAILED - EXTRACTING SWIFT ERRORS"
+            echo "=========================================="
+            
+            # Extract Swift compilation errors
+            grep -A 20 "error:" build_output.log | head -100 || true
+            
+            # Extract specific file errors
+            echo ""
+            echo "=========================================="
+            echo "ERRORS BY FILE:"
+            echo "=========================================="
+            grep -B 2 "error:" build_output.log | grep "\.swift" || true
+            
+            # Show the actual error messages
+            echo ""
+            echo "=========================================="
+            echo "DETAILED ERROR MESSAGES:"
+            echo "=========================================="
+            awk '/error:/ {print; for(i=1; i<=5; i++) {getline; print}}' build_output.log | head -200
+            
+            exit 1
+          fi
 
       - name: Package IPA and ZIP
         run: |
