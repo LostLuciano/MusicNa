@@ -2,7 +2,7 @@ import UIKit
 
 /// Root view controller with Liquid Glass design for iOS 18+
 /// Replaces old Music Stem Studio dashboard with modern glass UI
-public class LiquidGlassRootViewController: UITabBarController {
+class LiquidGlassRootViewController: UITabBarController {
     
     // Shared audio/ML models
     let separator = CoreMLStemSeparator()
