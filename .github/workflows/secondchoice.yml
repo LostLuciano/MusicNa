@@ -1,0 +1,182 @@
+# Build fully native Swift/UIKit iOS 18+ app
+# Output: unsigned IPA + ZIP, ESign friendly
+name: Build Standalone Native iOS ZIP (Secondary)
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: build-ios-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  IPA_NAME: MusicX.ipa
+  ZIP_NAME: MusicX.zip
+  PROJECT_NAME: Runner.xcodeproj
+  SCHEME_NAME: Runner
+  ARCHIVE_PATH: build/Runner.xcarchive
+  IOS_DEPLOYMENT_TARGET: "18.0"
+
+jobs:
+  build-ios:
+    name: Build iOS Application Unsigned
+    runs-on: macos-15
+    timeout-minutes: 90
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Checkout LFS Objects
+        run: |
+          set -e
+          git lfs install
+          git lfs pull
+          echo "=== Git LFS tracked files ==="
+          git lfs ls-files || true
+          echo "=== CoreML model sizes ==="
+          find Runner -name "*.mlmodelc" -type d -print0 | xargs -0 du -sh 2>/dev/null || true
+          echo "=== Audio asset sizes ==="
+          find Runner \( -name "*.m4a" -o -name "*.caf" -o -name "*.wav" -o -name "*.mp3" \) -type f -print0 | xargs -0 ls -lh 2>/dev/null || true
+          echo "=== Verify required stem examples ==="
+          for file in Runner/Vocals.m4a Runner/Drums.m4a Runner/Guitar.m4a Runner/Others.m4a; do
+            if [ -f "$file" ]; then
+              echo "Found $file ($(wc -c < "$file") bytes)"
+            else
+              echo "Missing $file"
+            fi
+          done
+
+      - name: Show Available Xcode Versions
+        run: |
+          echo "=== Available Xcode versions ==="
+          ls /Applications | grep Xcode || true
+
+      - name: Select Xcode 16
+        run: |
+          set -e
+          if [ -d "/Applications/Xcode_16.4.app" ]; then
+            sudo xcode-select -s /Applications/Xcode_16.4.app/Contents/Developer
+          elif [ -d "/Applications/Xcode_16.3.app" ]; then
+            sudo xcode-select -s /Applications/Xcode_16.3.app/Contents/Developer
+          elif [ -d "/Applications/Xcode_16.2.app" ]; then
+            sudo xcode-select -s /Applications/Xcode_16.2.app/Contents/Developer
+          elif [ -d "/Applications/Xcode_16.1.app" ]; then
+            sudo xcode-select -s /Applications/Xcode_16.1.app/Contents/Developer
+          elif [ -d "/Applications/Xcode_16.0.app" ]; then
+            sudo xcode-select -s /Applications/Xcode_16.0.app/Contents/Developer
+          else
+            echo "ERROR: Xcode 16 not found. iOS 18 build requires Xcode 16 or newer."
+            exit 1
+          fi
+          echo "=== Selected Xcode ==="
+          xcodebuild -version
+          echo "=== iPhoneOS SDK ==="
+          xcrun --sdk iphoneos --show-sdk-version
+
+      - name: Clear Xcode Cache
+        run: |
+          rm -rf ~/Library/Developer/Xcode/DerivedData/*
+          rm -rf ~/Library/Caches/com.apple.dt.Xcode
+
+      - name: Show Project Schemes
+        run: |
+          set -e
+          xcodebuild -list -project "${{ env.PROJECT_NAME }}"
+
+      - name: Build and Archive Unsigned
+        run: |
+          set -e
+          xcodebuild archive \
+            -project "${{ env.PROJECT_NAME }}" \
+            -scheme "${{ env.SCHEME_NAME }}" \
+            -configuration Release \
+            -sdk iphoneos \
+            -archivePath "${{ env.ARCHIVE_PATH }}" \
+            IPHONEOS_DEPLOYMENT_TARGET="${{ env.IOS_DEPLOYMENT_TARGET }}" \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            AD_HOC_CODE_SIGNING_ALLOWED=YES \
+            ONLY_ACTIVE_ARCH=NO
+
+      - name: Verify Archive Output
+        run: |
+          set -e
+          echo "=== Archive contents ==="
+          find "${{ env.ARCHIVE_PATH }}" -maxdepth 5 -type d | head -50
+          ARCHIVE_APPS_DIR="${{ env.ARCHIVE_PATH }}/Products/Applications"
+          if [ ! -d "$ARCHIVE_APPS_DIR" ]; then
+            echo "ERROR: Applications directory not found in archive."
+            find build -name "*.app" -type d 2>/dev/null || true
+            exit 1
+          fi
+          APP_COUNT=$(find "$ARCHIVE_APPS_DIR" -maxdepth 1 -name "*.app" -type d | wc -l | tr -d ' ')
+          echo "Found $APP_COUNT app bundle(s)."
+          if [ "$APP_COUNT" = "0" ]; then
+            echo "ERROR: No .app bundle found in archive."
+            ls -la "$ARCHIVE_APPS_DIR" || true
+            exit 1
+          fi
+
+      - name: Package IPA and ZIP
+        run: |
+          set -e
+          ARCHIVE_APPS_DIR="${{ env.ARCHIVE_PATH }}/Products/Applications"
+          ARCHIVE_APP_PATH=$(find "$ARCHIVE_APPS_DIR" -maxdepth 1 -name "*.app" -type d | head -1)
+          if [ -z "$ARCHIVE_APP_PATH" ] || [ ! -d "$ARCHIVE_APP_PATH" ]; then
+            echo "ERROR: No .app bundle found inside archive."
+            echo "Contents of $ARCHIVE_APPS_DIR:"
+            ls -la "$ARCHIVE_APPS_DIR" 2>/dev/null || true
+            find build -name "*.app" -type d 2>/dev/null || true
+            exit 1
+          fi
+          APP_NAME=$(basename "$ARCHIVE_APP_PATH")
+          echo "Found app bundle: $APP_NAME"
+          echo "Packaging app bundle: $ARCHIVE_APP_PATH"
+          PACKAGE_DIR="${RUNNER_TEMP}/ipa_package"
+          rm -rf "$PACKAGE_DIR"
+          mkdir -p "$PACKAGE_DIR/Payload"
+          cp -R "$ARCHIVE_APP_PATH" "$PACKAGE_DIR/Payload/"
+          echo "=== Payload contents ==="
+          ls -lh "$PACKAGE_DIR/Payload"
+          cd "$PACKAGE_DIR"
+          zip -r "${{ github.workspace }}/${{ env.IPA_NAME }}" Payload
+          cd "${{ github.workspace }}"
+          zip -r "${{ env.ZIP_NAME }}" "${{ env.IPA_NAME }}"
+          echo "=== Packaging Complete ==="
+          ls -lh "${{ env.IPA_NAME }}"
+          ls -lh "${{ env.ZIP_NAME }}"
+
+      - name: Upload IPA Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: MusicX-Native-iOS-IPA
+          path: ${{ env.IPA_NAME }}
+          retention-days: 30
+
+      - name: Upload ZIP Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: MusicX-Native-iOS-ZIP
+          path: ${{ env.ZIP_NAME }}
+          retention-days: 30
+
+      - name: Upload Build Logs on Failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: native-build-logs
+          path: |
+            build/
+            ~/Library/Developer/Xcode/DerivedData/
+          retention-days: 7
