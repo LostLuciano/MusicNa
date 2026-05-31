@@ -22,7 +22,7 @@ jobs:
   build-ios:
     name: Build iOS Application (Unsigned)
     runs-on: macos-15
-    timeout-minutes: 45
+    timeout-minutes: 90
 
     steps:
       - name: Checkout Repository
@@ -65,6 +65,26 @@ jobs:
         run: |
           rm -rf ~/Library/Developer/Xcode/DerivedData/*
           rm -rf ~/Library/Caches/com.apple.dt.Xcode
+
+      - name: Verify LFS Files
+        run: |
+          echo "=== Checking LFS file status ==="
+          git lfs ls-files | head -20
+          echo "=== Verifying critical audio files ==="
+          for file in Runner/Vocals.m4a Runner/Drums.m4a Runner/Guitar.m4a Runner/Others.m4a; do
+            if [ -f "$file" ]; then
+              size=$(stat -f%z "$file" 2>/dev/null || stat -c%s "$file" 2>/dev/null || echo "unknown")
+              echo "✓ $file exists (size: $size bytes)"
+            else
+              echo "✗ $file MISSING"
+            fi
+          done
+          echo "=== Verifying CoreML models ==="
+          for model in Runner/*.mlmodelc; do
+            if [ -d "$model" ]; then
+              echo "✓ $(basename $model) exists"
+            fi
+          done
 
       - name: Build and Archive (Unsigned)
         run: |
