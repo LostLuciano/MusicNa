@@ -1,0 +1,124 @@
+name: Debug Swift Compilation Errors
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  build:
+    runs-on: macos-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Select Xcode version
+      run: |
+        sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer
+        xcodebuild -version
+    
+    - name: Archive iOS App Unsigned
+      run: |
+        set -o pipefail
+        xcodebuild clean archive \
+          -project Runner.xcodeproj \
+          -scheme Runner \
+          -configuration Release \
+          -destination "generic/platform=iOS" \
+          -archivePath "$PWD/build/Runner.xcarchive" \
+          CODE_SIGNING_ALLOWED=NO \
+          CODE_SIGNING_REQUIRED=NO \
+          CODE_SIGN_IDENTITY="" \
+          DEVELOPMENT_TEAM="" \
+          COMPILER_INDEX_STORE_ENABLE=NO \
+          SWIFT_COMPILATION_MODE=singlefile \
+          2>&1 | tee xcodebuild.log
+    
+    - name: Print Real Swift Errors
+      if: failure()
+      run: |
+        echo "===== EXTRACTING SWIFT COMPILATION ERRORS ====="
+        echo ""
+        echo "===== ERROR SUMMARY ====="
+        grep -nE "error:" xcodebuild.log | head -50 || echo "No error: patterns found"
+        echo ""
+        echo "===== FATAL ERRORS ====="
+        grep -nE "fatal error:" xcodebuild.log | head -50 || echo "No fatal errors found"
+        echo ""
+        echo "===== SWIFT FILE ERRORS (with line numbers) ====="
+        grep -nE "/Runner/.*\.swift:[0-9]+:[0-9]+: error:" xcodebuild.log | head -100 || echo "No Swift file errors found"
+        echo ""
+        echo "===== FULL BUILD LOG (last 200 lines) ====="
+        tail -200 xcodebuild.log
+    
+    - name: Upload build log
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: xcodebuild-log
+        path: xcodebuild.log
+        retention-days: 7
+    
+    - name: Parse and display errors in structured format
+      if: failure()
+      run: |
+        echo "===== STRUCTURED ERROR REPORT ====="
+        python3 << 'EOF'
+        import re
+        import sys
+        
+        try:
+            with open('xcodebuild.log', 'r') as f:
+                lines = f.readlines()
+            
+            errors = []
+            warnings = []
+            
+            for i, line in enumerate(lines):
+                # Match Swift compilation errors
+                error_match = re.search(r"(/Runner/[^:]+):(\d+):(\d+): error: (.*)", line)
+                if error_match:
+                    file_path, line_num, col_num, message = error_match.groups()
+                    errors.append({
+                        'file': file_path,
+                        'line': line_num,
+                        'col': col_num,
+                        'message': message,
+                        'context_line': i
+                    })
+                
+                # Match Swift warnings
+                warn_match = re.search(r"(/Runner/[^:]+):(\d+):(\d+): warning: (.*)", line)
+                if warn_match:
+                    file_path, line_num, col_num, message = warn_match.groups()
+                    warnings.append({
+                        'file': file_path,
+                        'line': line_num,
+                        'col': col_num,
+                        'message': message
+                    })
+            
+            print(f"\n{'='*80}")
+            print(f"TOTAL ERRORS: {len(errors)} | TOTAL WARNINGS: {len(warnings)}")
+            print(f"{'='*80}\n")
+            
+            if errors:
+                print("❌ COMPILATION ERRORS:\n")
+                for idx, error in enumerate(errors, 1):
+                    print(f"{idx}. {error['file']}:{error['line']}:{error['col']}")
+                    print(f"   └─ {error['message']}\n")
+            
+            if warnings:
+                print("\n⚠️  WARNINGS:\n")
+                for idx, warn in enumerate(warnings, 1):
+                    print(f"{idx}. {warn['file']}:{warn['line']}:{warn['col']}")
+                    print(f"   └─ {warn['message']}\n")
+            
+            if errors:
+                sys.exit(1)
+        except Exception as e:
+            print(f"Error parsing log: {e}")
+            sys.exit(1)
+        EOF
