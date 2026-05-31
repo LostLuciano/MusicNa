@@ -80,6 +80,60 @@ jobs:
           echo "=== Validating project.pbxproj structure ==="
           head -100 Runner.xcodeproj/project.pbxproj | tail -50
 
+      - name: Validate PBXSourcesBuildPhase Configuration
+        run: |
+          python3 - <<'VALIDATION_PY'
+          import re
+          from pathlib import Path
+          
+          pbx_path = Path("Runner.xcodeproj/project.pbxproj")
+          pbx_content = pbx_path.read_text()
+          
+          print("=" * 70)
+          print("VALIDATION: LiquidGlassRootViewController.swift in Build Phases")
+          print("=" * 70)
+          
+          # Check if file is referenced at all
+          if "LiquidGlassRootViewController.swift" not in pbx_content:
+              print("FATAL: LiquidGlassRootViewController.swift is not referenced in project.pbxproj")
+              exit(1)
+          
+          # Check if it's in PBXBuildFile
+          if "1F4A90F1ABC2DE34F56B8901 /* LiquidGlassRootViewController.swift in Sources */" not in pbx_content:
+              print("FATAL: LiquidGlassRootViewController.swift is not in PBXBuildFile section")
+              exit(1)
+          print("✓ Found in PBXBuildFile: 1F4A90F1ABC2DE34F56B8901")
+          
+          # Extract PBXSourcesBuildPhase for Runner target (97C146EA1CF9000F007C117D)
+          pattern = r'97C146EA1CF9000F007C117D\s*\/\*\s*Sources\s*\*\/\s*=\s*\{[^}]+\}'
+          match = re.search(pattern, pbx_content, re.DOTALL)
+          
+          if not match:
+              print("FATAL: Cannot find Runner target PBXSourcesBuildPhase")
+              exit(1)
+          
+          sources_phase = match.group(0)
+          print("\n" + "=" * 70)
+          print("PBXSourcesBuildPhase for Runner target:")
+          print("=" * 70)
+          print(sources_phase[:500] + "..." if len(sources_phase) > 500 else sources_phase)
+          
+          # Check if LiquidGlassRootViewController is in Sources
+          if "LiquidGlassRootViewController.swift in Sources" not in sources_phase:
+              print("\n" + "!" * 70)
+              print("FATAL ERROR: LiquidGlassRootViewController.swift NOT in PBXSourcesBuildPhase")
+              print("!" * 70)
+              print("\nFull PBXSourcesBuildPhase content:")
+              print(sources_phase)
+              exit(1)
+          
+          print("\n✓ LiquidGlassRootViewController.swift IS in PBXSourcesBuildPhase")
+          print("✓ File will be compiled into Runner target")
+          print("\n" + "=" * 70)
+          print("VALIDATION PASSED")
+          print("=" * 70)
+          VALIDATION_PY
+
       - name: Verify LFS Files
         run: |
           echo "=== Checking LFS file status ==="

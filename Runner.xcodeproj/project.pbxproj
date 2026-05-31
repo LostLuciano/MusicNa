@@ -431,18 +431,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				
-				
+				74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */,
+				7884E8682EC3CC0700C636F2 /* SceneDelegate.swift in Sources */,
+				1F4A90F1ABC2DE34F56B8901 /* LiquidGlassRootViewController.swift in Sources */,
 				E9B1B18F5D68B6014D10CFAF /* MetronomeManager.swift in Sources */,
-				E9B983F86CE4E91D0CC657BB /* LyricsManager.swift in Sources */,E9A335F2F9AF61E2D75D7C6F /* AudioEngineManager.swift in Sources */,
+				E9B983F86CE4E91D0CC657BB /* LyricsManager.swift in Sources */,
+				E9A335F2F9AF61E2D75D7C6F /* AudioEngineManager.swift in Sources */,
 				E9A19F90CD138FBBCC3EC5EA /* AudioFeatureExtractor.swift in Sources */,
 				E9ADA0050CC1B3DE99870446 /* BeatDetectionManager.swift in Sources */,
 				E9AC2E8C4A1F8977C6665F21 /* ChordDetectionManager.swift in Sources */,
 				E9A37049C039559402BDFFFA /* CoreMLStemSeparator.swift in Sources */,
 				E9A3790A11C8E44543D84CD8 /* FlutterMethodChannelBridge.swift in Sources */,
-				E9A263F4CAE53D06CAD5A708 /* StemMixerChannel.swift in Sources */,74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */,
+				E9A263F4CAE53D06CAD5A708 /* StemMixerChannel.swift in Sources */,
 				1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */,
-				7884E8682EC3CC0700C636F2 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
