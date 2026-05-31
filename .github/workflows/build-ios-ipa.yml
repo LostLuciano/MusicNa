@@ -83,17 +83,31 @@ jobs:
         run: |
           set -e
 
-          ARCHIVE_APP_PATH="build/Runner.xcarchive/Products/Applications/Runner.app"
-
-          if [ ! -d "$ARCHIVE_APP_PATH" ]; then
-            echo "ERROR: Runner.app not found inside archive: $ARCHIVE_APP_PATH"
-            find build -name "*.app" -type d 2>/dev/null
+          # Dynamically find the .app bundle (could be Runner.app or MusicNative.app)
+          ARCHIVE_APPS_DIR="build/Runner.xcarchive/Products/Applications"
+          
+          if [ ! -d "$ARCHIVE_APPS_DIR" ]; then
+            echo "ERROR: Applications directory not found in archive"
+            find build -name "*.app" -type d 2>/dev/null || true
             exit 1
           fi
 
+          # Find the first .app bundle in the archive
+          ARCHIVE_APP_PATH=$(find "$ARCHIVE_APPS_DIR" -maxdepth 1 -name "*.app" -type d | head -1)
+
+          if [ -z "$ARCHIVE_APP_PATH" ] || [ ! -d "$ARCHIVE_APP_PATH" ]; then
+            echo "ERROR: No .app bundle found inside archive"
+            echo "Contents of $ARCHIVE_APPS_DIR:"
+            ls -la "$ARCHIVE_APPS_DIR" 2>/dev/null || true
+            find build -name "*.app" -type d 2>/dev/null || true
+            exit 1
+          fi
+
+          APP_NAME=$(basename "$ARCHIVE_APP_PATH")
+          echo "Found app bundle: $APP_NAME"
           echo "Packaging native app bundle: $ARCHIVE_APP_PATH"
 
-          # 1. Create Payload folder and copy Runner.app into it
+          # 1. Create Payload folder and copy app into it
           PACKAGE_DIR="${RUNNER_TEMP}/ipa_package"
           rm -rf "$PACKAGE_DIR"
           mkdir -p "$PACKAGE_DIR/Payload"
