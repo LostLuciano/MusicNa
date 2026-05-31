@@ -1885,7 +1885,17 @@ class AnalyticsViewController: UIViewController, UITableViewDataSource, UITableV
         
         return cell!
     }
-    
+}
+
+// MARK: - MixerViewController
+class MixerViewController: UIViewController {
+    func audioUpdated() {}
+}
+
+// MARK: - AnalyticsViewController
+class AnalyticsViewController: UIViewController {
+    func audioUpdated() {}
+}
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if tableView == chordsTableView {
             return 54

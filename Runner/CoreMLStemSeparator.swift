@@ -592,15 +592,6 @@ public class CoreMLStemSeparator {
     private func writeAudioBuffer(_ buffer: AVAudioPCMBuffer, to url: URL) throws {
         // Write as M4A (AAC)
         let channelCount = Int(buffer.format.channelCount)
-        guard let outputFormat = AVAudioFormat(
-            commonFormat: .pcmFormatFloat32,
-            sampleRate: targetSampleRate,
-            channels: AVAudioChannelCount(channelCount),
-            interleaved: false
-        ) else {
-            throw NSError(domain: "CoreMLStemSeparator", code: 500,
-                          userInfo: [NSLocalizedDescriptionKey: "Failed to create output format"])
-        }
 
         let settings: [String: Any] = [
             AVFormatIDKey: kAudioFormatMPEG4AAC,
