@@ -66,6 +66,20 @@ jobs:
           rm -rf ~/Library/Developer/Xcode/DerivedData/*
           rm -rf ~/Library/Caches/com.apple.dt.Xcode
 
+      - name: Debug Swift Files and project.pbxproj
+        run: |
+          echo "=== Swift files in Runner directory ==="
+          find Runner -maxdepth 5 -name "*.swift" -type f | sort
+          echo ""
+          echo "=== Checking project.pbxproj for LiquidGlassRootViewController ==="
+          grep -n "LiquidGlassRootViewController.swift" Runner.xcodeproj/project.pbxproj || echo "NOT FOUND"
+          echo ""
+          echo "=== Checking if LiquidGlassRootViewController.swift file exists ==="
+          ls -la Runner/LiquidGlassRootViewController.swift 2>/dev/null || echo "FILE NOT FOUND"
+          echo ""
+          echo "=== Validating project.pbxproj structure ==="
+          head -100 Runner.xcodeproj/project.pbxproj | tail -50
+
       - name: Verify LFS Files
         run: |
           echo "=== Checking LFS file status ==="
