@@ -101,7 +101,7 @@ public class CoreMLStemSeparator {
                 let fallbackStems = try copyBundleFallback(audioURL: audioURL)
                 onProgress("Inference tidak didukung perangkat. Menggunakan file demo kualitas tinggi bawaan.", 0.95)
                 return fallbackStems
-            } catch fallbackError {
+            } catch let fallbackError {
                 print("[StemSeparator] ❌ Fallback failed too: \(fallbackError.localizedDescription)")
                 throw error
             }
