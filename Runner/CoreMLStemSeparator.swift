@@ -193,7 +193,7 @@ public class CoreMLStemSeparator {
             )
 
             // Run CoreML inference
-            let prediction = try model.prediction(from: inputArray)
+            let prediction = try await model.prediction(from: inputArray)
 
             // Extract each stem's output and overlap-add into the full-length arrays
             for name in stemNames {

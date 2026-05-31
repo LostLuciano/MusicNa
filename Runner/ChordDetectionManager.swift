@@ -88,8 +88,7 @@ public class ChordDetectionManager {
             
             let workingBuffer: AVAudioPCMBuffer
             if format.sampleRate != targetSampleRate || format.channelCount != 1 {
-                guard let monoFormat = AVAudioFormat(commonFormat: .pcmFormatFloat32, sampleRate: targetSampleRate, channels: 1, interleaved: false),
-                      let resampled = extractor.resampleAudio(inputBuffer: buffer, targetSampleRate: targetSampleRate) else {
+                guard let resampled = extractor.resampleAudio(inputBuffer: buffer, targetSampleRate: targetSampleRate) else {
                     throw NSError(domain: "ChordDetectionManager", code: 500, userInfo: [NSLocalizedDescriptionKey: "Audio resampling/mono conversion failed"])
                 }
                 workingBuffer = resampled
