@@ -119,6 +119,31 @@ class MainViewController: UITabBarController {
         self.viewControllers = vcs
     }
     
+    // Helper function to safely find a view controller of specific type
+    private func findViewController<T: UIViewController>(ofType type: T.Type, in vc: UIViewController?) -> T? {
+        // Direct match
+        if let match = vc as? T {
+            return match
+        }
+        
+        // Search in UINavigationController
+        if let nav = vc as? UINavigationController {
+            return nav.viewControllers.compactMap { findViewController(ofType: type, in: $0) }.first
+        }
+        
+        // Search in UITabBarController
+        if let tab = vc as? UITabBarController {
+            return tab.viewControllers?.compactMap { findViewController(ofType: type, in: $0) }.first
+        }
+        
+        // Search in presented view controller
+        if let presented = vc?.presentedViewController {
+            return findViewController(ofType: type, in: presented)
+        }
+        
+        return nil
+    }
+    
     // Globally shared method to notify sub-view controllers about audio update events
     func updateAudioFile(url: URL, stems: [String: URL]?, chords: [ChordSegment], beats: BeatTempoResult?) {
         self.currentSongURL = url
@@ -128,17 +153,20 @@ class MainViewController: UITabBarController {
         self.chordSegments = chords
         self.beatResult = beats
         
-        // Propagate events directly to individual view controllers
+        // Propagate events directly to individual view controllers using safe casting
         if let viewControllers = self.viewControllers {
-            for nav in viewControllers {
-                if let dashboard = nav.viewControllers.first as? DashboardViewController {
-                    dashboard.audioUpdated()
-                }
-                if let mixer = nav.viewControllers.first as? MixerViewController {
-                    mixer.audioUpdated()
-                }
-                if let analytics = nav.viewControllers.first as? AnalyticsViewController {
-                    analytics.audioUpdated()
+            for vc in viewControllers {
+                // Safe cast to UINavigationController and access root view controller
+                if let nav = vc as? UINavigationController {
+                    if let dashboard = nav.viewControllers.first as? DashboardViewController {
+                        dashboard.audioUpdated()
+                    }
+                    if let mixer = nav.viewControllers.first as? MixerViewController {
+                        mixer.audioUpdated()
+                    }
+                    if let analytics = nav.viewControllers.first as? AnalyticsViewController {
+                        analytics.audioUpdated()
+                    }
                 }
             }
         }
