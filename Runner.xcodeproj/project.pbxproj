@@ -7,6 +7,51 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		84D4034B9CAB71911970FE5A /* Typography.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8774AF1049ED57E6F9AF817B /* Typography.swift */; };
+		86583A3CE12D0C6623E0F859 /* StudioTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1081E7717836555D5BFD84C4 /* StudioTheme.swift */; };
+		73AB7838DC5ECD58914F57E5 /* StudioColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8B725DBA176B78A12364A7 /* StudioColors.swift */; };
+		7B1C5B877E9CA38134AC137A /* GlassEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD8F01A7AAF10D1F680A8639 /* GlassEffect.swift */; };
+		15B650F096BA434EE756297D /* StudioTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB20C55093C98A0D1525AAA /* StudioTabBarController.swift */; };
+		AD8AE6C607FFCDD005DEF570 /* StudioSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D0782471FA558DF1B90886 /* StudioSettingsViewController.swift */; };
+		289BF4100769DBBFD460C1EC /* ResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F569A5B5F360273987AE3 /* ResultViewController.swift */; };
+		9211A44BCB03B26F6A52A305 /* RecordingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2775640DB6F1973E9B9FB8DD /* RecordingViewController.swift */; };
+		432DF600B4CDADA4E6A7989B /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E43E6708DA9AAD609D9BFB /* ProfileViewController.swift */; };
+		442D4F2C2E28434C2BBEEF55 /* ProcessingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BE2217ED544E164697A1698 /* ProcessingViewController.swift */; };
+		DDE171E9CA9520702CC6E167 /* MixerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F44B18FDD9AA86307545E3B /* MixerViewController.swift */; };
+		2E87D0A1C5DABF1B49EE5884 /* LibraryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2ED833D5E045315923A1471 /* LibraryViewController.swift */; };
+		96945BC2D694FDCDE47A27AE /* ImportSourceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7DD393B753B3CD6A1EF3C76 /* ImportSourceViewController.swift */; };
+		2E25FC38C9A407F489244186 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD8A19E4DFFD1CBB15126FB /* HomeViewController.swift */; };
+		B095018932A5E938287D9678 /* ExportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5829011237CD3B4E1EF75D6 /* ExportViewController.swift */; };
+		77DD3DFFF8D53E08CA0780DC /* AnalyzerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F133B7955E39191B81A2D7A /* AnalyzerViewController.swift */; };
+		720178893F14CBA2247DC371 /* WaveformView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F53B73C2659AA187E02D1577 /* WaveformView.swift */; };
+		C415187C67BC9A66310A59B9 /* StudioSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF879BA92E079D756739F6A3 /* StudioSegmentedControl.swift */; };
+		33EEEBEF1A0BB27B0D4B1F03 /* StemChannelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDAC3FA3D5897B06FE50DB7 /* StemChannelView.swift */; };
+		9409C17A86EC502254042308 /* PurpleGlowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9ABA16D56183A873B5F7302 /* PurpleGlowButton.swift */; };
+		431F65F3DA2433D0AE213F72 /* ProcessingStageRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8542B08105C04A9D9886DD6 /* ProcessingStageRowView.swift */; };
+		3F5D040AD7161C2AAA24762D /* ProcessingRingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DABAAE980E25DC89E259EAE0 /* ProcessingRingView.swift */; };
+		B65470F0AAC7BFB172393EC9 /* LyricsKaraokeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A11EE1250B3158FCC4CFF8 /* LyricsKaraokeView.swift */; };
+		320031806985566C5A315A91 /* LiquidBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC698C26131286A751462F6F /* LiquidBackgroundView.swift */; };
+		DF91078200E8AF985A3D509C /* GlassCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F384ADE863FAC2D971711A20 /* GlassCardView.swift */; };
+		01973CDEA0EEFA2C91F2914C /* FloatingTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF408ED554D60C37AE43DDC /* FloatingTabBar.swift */; };
+		DC1B5DDDA484E6E9BF2B7B25 /* FloatingActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4884E5D70914FA24D6C01E8E /* FloatingActionButton.swift */; };
+		CF704711E28F565425AA42BF /* EmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370FE3F4BB83F6A62037ADD7 /* EmptyStateView.swift */; };
+		34297C75BBE4AECD24D3001E /* ChordTimelineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F404B16A3E088DE1DA7149 /* ChordTimelineView.swift */; };
+		156A1DADF5DCC24D366F3FDC /* ChordPatternView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59782032FED5EFEB628EE4C /* ChordPatternView.swift */; };
+		06948C96CF66880FFB732471 /* BeatGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840FB0B7CDA20B5A515CC923 /* BeatGridView.swift */; };
+		27EF10185CEAB2C89E7BCD6E /* AudioLevelMeterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46782A9158527A1C62203213 /* AudioLevelMeterView.swift */; };
+		ACE4BE10E34E4C4BC4897B31 /* ProcessingGate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EF658E1C4CBE778E6BD74E /* ProcessingGate.swift */; };
+		C5901A7738CC9409B866B0B1 /* PerformanceGuard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146194EE83ED984D0C4862EC /* PerformanceGuard.swift */; };
+		53C60D07EBB348DE33FBF60D /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC48889080A20ADD76B2B2BD /* Logger.swift */; };
+		67379C9B0C529A82616334F8 /* FileImportManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94CCFB133F3760A752AEEEFE /* FileImportManager.swift */; };
+		93AB350AE39F81949524BD79 /* ExportManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11684ADD05B8588BF35D5BB /* ExportManager.swift */; };
+		7B2F094DC50101F51518ED63 /* CacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59AC089FB097F48F33067D2 /* CacheManager.swift */; };
+		79A01B1442A8EC6E9CB54296 /* TrackMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D113F3FA565209D58B0E8CE /* TrackMetadata.swift */; };
+		99EBAC20EEEBB3592963D0C6 /* StemProject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FEA9D62BA7992E01D428CA6 /* StemProject.swift */; };
+		43BFC237D20192B46D93B992 /* ProjectStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C354EAA0774B3F7586DCBA96 /* ProjectStore.swift */; };
+		EB8E41F808D07A5880221D96 /* ModelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30DE1CA0A0DC70A1DCDE1A6B /* ModelManager.swift */; };
+		0CB40188FCC2663B48500284 /* DemoDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B8E80287BC79BAC7C1CCCA7 /* DemoDataManager.swift */; };
+		32392B216FE8E55D8174D5EC /* CoreMLStemSeparatorWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFAE459DC1B141C87997A347 /* CoreMLStemSeparatorWrapper.swift */; };
+		62CB0151FE04993D7341905E /* ChordTheory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FEDD63C466A6C952DA3219D /* ChordTheory.swift */; };
 		E9B1B18F5D68B6014D10CFAF /* MetronomeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9BCF1D7EDA4C416D82EC355 /* MetronomeManager.swift */; };
 		E9B983F86CE4E91D0CC657BB /* LyricsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B8A770F1D9448C074A1BEC /* LyricsManager.swift */; };
 		E9BFE849A48070349552661B /* country.caf in Resources */ = {isa = PBXBuildFile; fileRef = E9B54FFA3B664DF6ADA11A57 /* country.caf */; };
@@ -92,6 +137,51 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		8774AF1049ED57E6F9AF817B /* Typography.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UI/Theme/Typography.swift; sourceTree = "<group>"; };
+		1081E7717836555D5BFD84C4 /* StudioTheme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UI/Theme/StudioTheme.swift; sourceTree = "<group>"; };
+		7A8B725DBA176B78A12364A7 /* StudioColors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UI/Theme/StudioColors.swift; sourceTree = "<group>"; };
+		AD8F01A7AAF10D1F680A8639 /* GlassEffect.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UI/Theme/GlassEffect.swift; sourceTree = "<group>"; };
+		6EB20C55093C98A0D1525AAA /* StudioTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UI/Screens/StudioTabBarController.swift; sourceTree = "<group>"; };
+		B3D0782471FA558DF1B90886 /* StudioSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UI/Screens/StudioSettingsViewController.swift; sourceTree = "<group>"; };
+		0D8F569A5B5F360273987AE3 /* ResultViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UI/Screens/ResultViewController.swift; sourceTree = "<group>"; };
+		2775640DB6F1973E9B9FB8DD /* RecordingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UI/Screens/RecordingViewController.swift; sourceTree = "<group>"; };
+		56E43E6708DA9AAD609D9BFB /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UI/Screens/ProfileViewController.swift; sourceTree = "<group>"; };
+		6BE2217ED544E164697A1698 /* ProcessingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UI/Screens/ProcessingViewController.swift; sourceTree = "<group>"; };
+		9F44B18FDD9AA86307545E3B /* MixerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UI/Screens/MixerViewController.swift; sourceTree = "<group>"; };
+		B2ED833D5E045315923A1471 /* LibraryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UI/Screens/LibraryViewController.swift; sourceTree = "<group>"; };
+		E7DD393B753B3CD6A1EF3C76 /* ImportSourceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UI/Screens/ImportSourceViewController.swift; sourceTree = "<group>"; };
+		4BD8A19E4DFFD1CBB15126FB /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UI/Screens/HomeViewController.swift; sourceTree = "<group>"; };
+		F5829011237CD3B4E1EF75D6 /* ExportViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UI/Screens/ExportViewController.swift; sourceTree = "<group>"; };
+		3F133B7955E39191B81A2D7A /* AnalyzerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UI/Screens/AnalyzerViewController.swift; sourceTree = "<group>"; };
+		F53B73C2659AA187E02D1577 /* WaveformView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UI/Components/WaveformView.swift; sourceTree = "<group>"; };
+		FF879BA92E079D756739F6A3 /* StudioSegmentedControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UI/Components/StudioSegmentedControl.swift; sourceTree = "<group>"; };
+		DBDAC3FA3D5897B06FE50DB7 /* StemChannelView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UI/Components/StemChannelView.swift; sourceTree = "<group>"; };
+		D9ABA16D56183A873B5F7302 /* PurpleGlowButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UI/Components/PurpleGlowButton.swift; sourceTree = "<group>"; };
+		E8542B08105C04A9D9886DD6 /* ProcessingStageRowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UI/Components/ProcessingStageRowView.swift; sourceTree = "<group>"; };
+		DABAAE980E25DC89E259EAE0 /* ProcessingRingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UI/Components/ProcessingRingView.swift; sourceTree = "<group>"; };
+		A9A11EE1250B3158FCC4CFF8 /* LyricsKaraokeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UI/Components/LyricsKaraokeView.swift; sourceTree = "<group>"; };
+		EC698C26131286A751462F6F /* LiquidBackgroundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UI/Components/LiquidBackgroundView.swift; sourceTree = "<group>"; };
+		F384ADE863FAC2D971711A20 /* GlassCardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UI/Components/GlassCardView.swift; sourceTree = "<group>"; };
+		CEF408ED554D60C37AE43DDC /* FloatingTabBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UI/Components/FloatingTabBar.swift; sourceTree = "<group>"; };
+		4884E5D70914FA24D6C01E8E /* FloatingActionButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UI/Components/FloatingActionButton.swift; sourceTree = "<group>"; };
+		370FE3F4BB83F6A62037ADD7 /* EmptyStateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UI/Components/EmptyStateView.swift; sourceTree = "<group>"; };
+		47F404B16A3E088DE1DA7149 /* ChordTimelineView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UI/Components/ChordTimelineView.swift; sourceTree = "<group>"; };
+		E59782032FED5EFEB628EE4C /* ChordPatternView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UI/Components/ChordPatternView.swift; sourceTree = "<group>"; };
+		840FB0B7CDA20B5A515CC923 /* BeatGridView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UI/Components/BeatGridView.swift; sourceTree = "<group>"; };
+		46782A9158527A1C62203213 /* AudioLevelMeterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UI/Components/AudioLevelMeterView.swift; sourceTree = "<group>"; };
+		22EF658E1C4CBE778E6BD74E /* ProcessingGate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = System/ProcessingGate.swift; sourceTree = "<group>"; };
+		146194EE83ED984D0C4862EC /* PerformanceGuard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = System/PerformanceGuard.swift; sourceTree = "<group>"; };
+		BC48889080A20ADD76B2B2BD /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = System/Logger.swift; sourceTree = "<group>"; };
+		94CCFB133F3760A752AEEEFE /* FileImportManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = System/FileImportManager.swift; sourceTree = "<group>"; };
+		B11684ADD05B8588BF35D5BB /* ExportManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = System/ExportManager.swift; sourceTree = "<group>"; };
+		A59AC089FB097F48F33067D2 /* CacheManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = System/CacheManager.swift; sourceTree = "<group>"; };
+		7D113F3FA565209D58B0E8CE /* TrackMetadata.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Data/TrackMetadata.swift; sourceTree = "<group>"; };
+		4FEA9D62BA7992E01D428CA6 /* StemProject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Data/StemProject.swift; sourceTree = "<group>"; };
+		C354EAA0774B3F7586DCBA96 /* ProjectStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Data/ProjectStore.swift; sourceTree = "<group>"; };
+		30DE1CA0A0DC70A1DCDE1A6B /* ModelManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AI/ModelManager.swift; sourceTree = "<group>"; };
+		4B8E80287BC79BAC7C1CCCA7 /* DemoDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AI/DemoDataManager.swift; sourceTree = "<group>"; };
+		EFAE459DC1B141C87997A347 /* CoreMLStemSeparatorWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AI/CoreMLStemSeparatorWrapper.swift; sourceTree = "<group>"; };
+		7FEDD63C466A6C952DA3219D /* ChordTheory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AI/ChordTheory.swift; sourceTree = "<group>"; };
 		E9BCF1D7EDA4C416D82EC355 /* MetronomeManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MetronomeManager.swift; sourceTree = "<group>"; };
 		E9B8A770F1D9448C074A1BEC /* LyricsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LyricsManager.swift; sourceTree = "<group>"; };
 		E9B54FFA3B664DF6ADA11A57 /* country.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = country.caf; sourceTree = "<group>"; };
@@ -444,7 +534,52 @@
 				E9A3790A11C8E44543D84CD8 /* FlutterMethodChannelBridge.swift in Sources */,
 				E9A263F4CAE53D06CAD5A708 /* StemMixerChannel.swift in Sources */,
 				1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */,
-			);
+							62CB0151FE04993D7341905E /* ChordTheory.swift in Sources */,
+				32392B216FE8E55D8174D5EC /* CoreMLStemSeparatorWrapper.swift in Sources */,
+				0CB40188FCC2663B48500284 /* DemoDataManager.swift in Sources */,
+				EB8E41F808D07A5880221D96 /* ModelManager.swift in Sources */,
+				43BFC237D20192B46D93B992 /* ProjectStore.swift in Sources */,
+				99EBAC20EEEBB3592963D0C6 /* StemProject.swift in Sources */,
+				79A01B1442A8EC6E9CB54296 /* TrackMetadata.swift in Sources */,
+				7B2F094DC50101F51518ED63 /* CacheManager.swift in Sources */,
+				93AB350AE39F81949524BD79 /* ExportManager.swift in Sources */,
+				67379C9B0C529A82616334F8 /* FileImportManager.swift in Sources */,
+				53C60D07EBB348DE33FBF60D /* Logger.swift in Sources */,
+				C5901A7738CC9409B866B0B1 /* PerformanceGuard.swift in Sources */,
+				ACE4BE10E34E4C4BC4897B31 /* ProcessingGate.swift in Sources */,
+				27EF10185CEAB2C89E7BCD6E /* AudioLevelMeterView.swift in Sources */,
+				06948C96CF66880FFB732471 /* BeatGridView.swift in Sources */,
+				156A1DADF5DCC24D366F3FDC /* ChordPatternView.swift in Sources */,
+				34297C75BBE4AECD24D3001E /* ChordTimelineView.swift in Sources */,
+				CF704711E28F565425AA42BF /* EmptyStateView.swift in Sources */,
+				DC1B5DDDA484E6E9BF2B7B25 /* FloatingActionButton.swift in Sources */,
+				01973CDEA0EEFA2C91F2914C /* FloatingTabBar.swift in Sources */,
+				DF91078200E8AF985A3D509C /* GlassCardView.swift in Sources */,
+				320031806985566C5A315A91 /* LiquidBackgroundView.swift in Sources */,
+				B65470F0AAC7BFB172393EC9 /* LyricsKaraokeView.swift in Sources */,
+				3F5D040AD7161C2AAA24762D /* ProcessingRingView.swift in Sources */,
+				431F65F3DA2433D0AE213F72 /* ProcessingStageRowView.swift in Sources */,
+				9409C17A86EC502254042308 /* PurpleGlowButton.swift in Sources */,
+				33EEEBEF1A0BB27B0D4B1F03 /* StemChannelView.swift in Sources */,
+				C415187C67BC9A66310A59B9 /* StudioSegmentedControl.swift in Sources */,
+				720178893F14CBA2247DC371 /* WaveformView.swift in Sources */,
+				77DD3DFFF8D53E08CA0780DC /* AnalyzerViewController.swift in Sources */,
+				B095018932A5E938287D9678 /* ExportViewController.swift in Sources */,
+				2E25FC38C9A407F489244186 /* HomeViewController.swift in Sources */,
+				96945BC2D694FDCDE47A27AE /* ImportSourceViewController.swift in Sources */,
+				2E87D0A1C5DABF1B49EE5884 /* LibraryViewController.swift in Sources */,
+				DDE171E9CA9520702CC6E167 /* MixerViewController.swift in Sources */,
+				442D4F2C2E28434C2BBEEF55 /* ProcessingViewController.swift in Sources */,
+				432DF600B4CDADA4E6A7989B /* ProfileViewController.swift in Sources */,
+				9211A44BCB03B26F6A52A305 /* RecordingViewController.swift in Sources */,
+				289BF4100769DBBFD460C1EC /* ResultViewController.swift in Sources */,
+				AD8AE6C607FFCDD005DEF570 /* StudioSettingsViewController.swift in Sources */,
+				15B650F096BA434EE756297D /* StudioTabBarController.swift in Sources */,
+				7B1C5B877E9CA38134AC137A /* GlassEffect.swift in Sources */,
+				73AB7838DC5ECD58914F57E5 /* StudioColors.swift in Sources */,
+				86583A3CE12D0C6623E0F859 /* StudioTheme.swift in Sources */,
+				84D4034B9CAB71911970FE5A /* Typography.swift in Sources */,
+);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */

@@ -134,6 +134,54 @@ jobs:
           print("=" * 70)
           VALIDATION_PY
 
+      - name: Verify All Swift Files Are In Xcode Project
+        run: |
+          echo "========================================================================"
+          echo "Verifying ALL Swift files are included in Xcode project"
+          echo "========================================================================"
+          
+          # Find all Swift files
+          echo "Finding all Swift files in Runner directory..."
+          find Runner -name "*.swift" -type f | grep -v "Test" | sort > all_swift_files.txt
+          TOTAL_FILES=$(wc -l < all_swift_files.txt)
+          echo "Found $TOTAL_FILES Swift files on disk"
+          
+          # Extract Swift files from project.pbxproj
+          echo ""
+          echo "Extracting Swift files from project.pbxproj..."
+          grep -o '[^/]*\.swift' Runner.xcodeproj/project.pbxproj | sort | uniq > project_swift_files.txt
+          PROJECT_FILES=$(wc -l < project_swift_files.txt)
+          echo "Found $PROJECT_FILES Swift files in project.pbxproj"
+          
+          # Find missing files
+          echo ""
+          echo "Checking for missing files..."
+          MISSING_COUNT=0
+          while IFS= read -r filepath; do
+            filename=$(basename "$filepath")
+            if ! grep -q "$filename" project_swift_files.txt; then
+              if [ $MISSING_COUNT -eq 0 ]; then
+                echo ""
+                echo "⚠️  MISSING SWIFT FILES:"
+              fi
+              echo "  - $filepath"
+              MISSING_COUNT=$((MISSING_COUNT + 1))
+            fi
+          done < all_swift_files.txt
+          
+          echo ""
+          echo "========================================================================"
+          if [ $MISSING_COUNT -eq 0 ]; then
+            echo "✓ SUCCESS: All Swift files are in the Xcode project!"
+            echo "========================================================================"
+          else
+            echo "❌ FAILURE: $MISSING_COUNT Swift files are missing from Xcode project!"
+            echo "========================================================================"
+            echo ""
+            echo "To fix this, run: python3 fix_xcode_project.py"
+            exit 1
+          fi
+
       - name: Verify LFS Files
         run: |
           echo "=== Checking LFS file status ==="

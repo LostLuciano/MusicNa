@@ -345,15 +345,8 @@ class LiquidGlassDashboardViewController: UIViewController, UIDocumentPickerDele
         versionLabel.font = UIFont.systemFont(ofSize: 12, weight: .medium)
         versionLabel.textColor = UIColor.systemCyan.withAlphaComponent(0.8)
         
-        // Track card styling - Manual glass effect (GlassEffect.swift not in project yet)
-        trackCard.backgroundColor = UIColor(white: 0.08, alpha: 0.6)
-        trackCard.layer.cornerRadius = 16
-        trackCard.layer.borderWidth = 0.5
-        trackCard.layer.borderColor = UIColor(white: 0.2, alpha: 0.3).cgColor
-        trackCard.layer.shadowColor = UIColor.black.cgColor
-        trackCard.layer.shadowOpacity = 0.3
-        trackCard.layer.shadowOffset = CGSize(width: 0, height: 4)
-        trackCard.layer.shadowRadius = 8
+        // Track card styling
+        GlassEffect.configureGlassCard(trackCard, cornerRadius: 16)
         
         trackTitle.text = "SELECT SOUND SOURCE"
         trackTitle.font = UIFont.systemFont(ofSize: 12, weight: .bold)
@@ -377,15 +370,8 @@ class LiquidGlassDashboardViewController: UIViewController, UIDocumentPickerDele
         importButton.backgroundColor = UIColor.systemCyan.withAlphaComponent(0.08)
         importButton.addTarget(self, action: #selector(importAudio), for: .touchUpInside)
         
-        // Config card styling - Manual glass effect
-        configCard.backgroundColor = UIColor(white: 0.08, alpha: 0.6)
-        configCard.layer.cornerRadius = 16
-        configCard.layer.borderWidth = 0.5
-        configCard.layer.borderColor = UIColor(white: 0.2, alpha: 0.3).cgColor
-        configCard.layer.shadowColor = UIColor.black.cgColor
-        configCard.layer.shadowOpacity = 0.3
-        configCard.layer.shadowOffset = CGSize(width: 0, height: 4)
-        configCard.layer.shadowRadius = 8
+        // Config card styling
+        GlassEffect.configureGlassCard(configCard, cornerRadius: 16)
         
         configTitle.text = "NEURAL INFERENCE"
         configTitle.font = UIFont.systemFont(ofSize: 12, weight: .bold)
@@ -401,15 +387,8 @@ class LiquidGlassDashboardViewController: UIViewController, UIDocumentPickerDele
         computeLabel.textColor = .white
         computeSegmentedControl.selectedSegmentIndex = 0
         
-        // Action card styling - Manual glass effect
-        actionCard.backgroundColor = UIColor(white: 0.08, alpha: 0.6)
-        actionCard.layer.cornerRadius = 16
-        actionCard.layer.borderWidth = 0.5
-        actionCard.layer.borderColor = UIColor(white: 0.2, alpha: 0.3).cgColor
-        actionCard.layer.shadowColor = UIColor.black.cgColor
-        actionCard.layer.shadowOpacity = 0.3
-        actionCard.layer.shadowOffset = CGSize(width: 0, height: 4)
-        actionCard.layer.shadowRadius = 8
+        // Action card styling
+        GlassEffect.configureGlassCard(actionCard, cornerRadius: 16)
         
         actionButton.backgroundColor = UIColor.systemCyan.withAlphaComponent(0.12)
         actionButton.layer.cornerRadius = 60
