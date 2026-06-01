@@ -153,10 +153,6 @@ extension UIView {
     func addPurpleGlow() {
         GlassEffect.addPurpleGlow(to: self)
     }
-    
-    func addGlow(color: UIColor) {
-        GlassEffect.addGlow(to: self, color: color)
-    }
 }
 
 // MARK: - UIButton Extension

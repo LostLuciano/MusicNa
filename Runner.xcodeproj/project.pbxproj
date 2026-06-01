@@ -13,6 +13,8 @@
 		7B1C5B877E9CA38134AC137A /* GlassEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD8F01A7AAF10D1F680A8639 /* GlassEffect.swift */; };
 		F8C4H1H9C0E9F7G5E7D3C1H4 /* AnalyticsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B2F9F7A8C9D7E3C5B1A9F2 /* AnalyticsViewController.swift */; };
 		G9D5I2I0D1F0G8H6F8E4D2I5 /* SnapKitCompat.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A3G0G8B9D8E6F4D6C2B0G3 /* SnapKitCompat.swift */; };
+		J1D6K3K1E2G1H9I7G9F5E3J6 /* ChordTimelineDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = H9B4I1I9C0E9F7G5E7D3C1H4 /* ChordTimelineDelegate.swift */; };
+		K2E7L4L2F3H2I0J8H0G6F4K7 /* StemChannelDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = I0C5J2J0D1F0G8H6F8E4D2I5 /* StemChannelDelegate.swift */; };
 		15B650F096BA434EE756297D /* StudioTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB20C55093C98A0D1525AAA /* StudioTabBarController.swift */; };
 		AD8AE6C607FFCDD005DEF570 /* StudioSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D0782471FA558DF1B90886 /* StudioSettingsViewController.swift */; };
 		289BF4100769DBBFD460C1EC /* ResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D8F569A5B5F360273987AE3 /* ResultViewController.swift */; };
@@ -252,6 +254,8 @@
 		97C147021CF9000F007C117D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F7B2F9F7A8C9D7E3C5B1A9F2 /* AnalyticsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Runner/UI/Screens/AnalyticsViewController.swift; sourceTree = "<group>"; };
 		E8A3G0G8B9D8E6F4D6C2B0G3 /* SnapKitCompat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Runner/UI/Theme/SnapKitCompat.swift; sourceTree = "<group>"; };
+		H9B4I1I9C0E9F7G5E7D3C1H4 /* ChordTimelineDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Runner/UI/Components/ChordTimelineDelegate.swift; sourceTree = "<group>"; };
+		I0C5J2J0D1F0G8H6F8E4D2I5 /* StemChannelDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Runner/UI/Components/StemChannelDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -582,6 +586,8 @@
 				7B1C5B877E9CA38134AC137A /* GlassEffect.swift in Sources */,
 				F8C4H1H9C0E9F7G5E7D3C1H4 /* AnalyticsViewController.swift in Sources */,
 				G9D5I2I0D1F0G8H6F8E4D2I5 /* SnapKitCompat.swift in Sources */,
+				J1D6K3K1E2G1H9I7G9F5E3J6 /* ChordTimelineDelegate.swift in Sources */,
+				K2E7L4L2F3H2I0J8H0G6F4K7 /* StemChannelDelegate.swift in Sources */,
 				73AB7838DC5ECD58914F57E5 /* StudioColors.swift in Sources */,
 				86583A3CE12D0C6623E0F859 /* StudioTheme.swift in Sources */,
 				84D4034B9CAB71911970FE5A /* Typography.swift in Sources */,
