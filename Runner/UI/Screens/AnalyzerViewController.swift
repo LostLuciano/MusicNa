@@ -47,6 +47,12 @@ public class AnalyzerViewController: UIViewController {
         beatManager.cancelDetection()
     }
     
+    /// Refresh analyzer when project/playback changes
+    public func audioUpdated() {
+        // Placeholder for connecting to playback state
+        // Will refresh analysis UI when audio project changes
+    }
+    
     private func setupUI() {
         setupStudioTheme()
         setupNavigationBar(title: "AI Analyzer", subtitle: "Music Analysis")

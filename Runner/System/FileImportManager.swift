@@ -62,7 +62,7 @@ public class FileImportManager: NSObject, UIDocumentPickerDelegate {
     }
     
     /// Get file information
-    public func getFileInfo(_ url: URL) throws -> FileInfo {
+    public func getFileInfo(_ url: URL) async throws -> FileInfo {
         let attributes = try FileManager.default.attributesOfItem(atPath: url.path)
         let fileSize = attributes[.size] as? UInt64 ?? 0
         let creationDate = attributes[.creationDate] as? Date ?? Date()

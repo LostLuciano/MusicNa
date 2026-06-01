@@ -192,6 +192,12 @@ class LiquidGlassDashboardViewController: UIViewController, UIDocumentPickerDele
         selectSong(index: 0)
     }
     
+    /// Selects song by index safely - fallback when no songs available
+    private func selectSong(index: Int) {
+        // Placeholder: ensures UI does not crash if no songs loaded
+        // Will be connected to real project/song data later
+    }
+    
     private func setupLayout() {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         contentView.translatesAutoresizingMaskIntoConstraints = false

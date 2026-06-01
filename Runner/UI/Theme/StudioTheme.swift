@@ -5,6 +5,10 @@ public class StudioTheme {
     
     static let shared = StudioTheme()
     
+    // MARK: - Static Color & Typography Access (for StudioTheme.colors.xxx syntax)
+    public static let colors = StudioColors.self
+    public static let typography = Typography.self
+    
     // MARK: - Spacing
     
     public let spacing2: CGFloat = 2

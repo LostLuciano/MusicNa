@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 import os.log
 
 /// PerformanceGuard monitors thermal state, memory, and processing times.
