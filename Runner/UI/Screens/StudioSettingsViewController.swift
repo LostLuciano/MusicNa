@@ -364,7 +364,7 @@ public class StudioSettingsViewController: UIViewController {
         return card
     }
     
-    private func createActionButton(title: String, action: Selector, style: UIButton.Configuration.ButtonStyle = .filled) -> UIButton {
+    private func createActionButton(title: String, action: Selector, isPrimary: Bool = true) -> UIButton {
         let button = UIButton(type: .system)
         button.addTarget(self, action: action, for: .touchUpInside)
         

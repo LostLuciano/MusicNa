@@ -26,7 +26,7 @@ public class Logger {
     }
     
     /// Log levels for filtering
-    enum Level: String {
+    public enum Level: String {
         case debug = "DEBUG"
         case info = "INFO"
         case warning = "WARN"
